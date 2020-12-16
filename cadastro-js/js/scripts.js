@@ -1,6 +1,11 @@
 document.addEventListener("DOMContentLoaded", function(event){
+    const alertListagem = document.querySelector('#alertListagem');
+    alertListagem.style.display = 'none';
+    
+    const alertCadastro = document.querySelector('#alertCadastro');
+    alertCadastro.style.display = 'none';
+
     const divListagem = document.getElementById("divListagem");
-    //divListagem.style.display = "none";
 
     const divCadastro = document.getElementById("divCadastro");
     divCadastro.style.display = "none";
@@ -20,20 +25,31 @@ document.addEventListener("DOMContentLoaded", function(event){
 
     const frmCadastro = document.getElementById("frmCadastro");
     frmCadastro.onsubmit = (evt) => {
-        
+        evt.preventDefault();
+
+        if(!document.querySelector('input[name="nome"]').value){
+            exibirMensagem('#alertCadastro', '<strong>Erro!</strong> Nome é obrigatório!');
+            return false;
+        }
         var data = new FormData(frmCadastro) ;
         updateDatabase(data)
             .then(result => {
                 const cliente = result;
                 
-                alert(`Cliente ${cliente.nome} cadastrado com sucesso!`);
+                exibirMensagem('#alertListagem', `<strong>Sucesso!</strong> Cliente ${cliente.nome} cadastrado com sucesso!`);
                 updateTable(cliente);
             })
-            .catch(error => alert(`Ocorreu um erro:${error}`));
+            .catch(error => alert(`Ocorreu um erro:${error}`));       
         
-        evt.preventDefault();
     }
-}); // Enf of DOMContentLoaded
+}); // End of DOMContentLoaded
+
+function exibirMensagem(selector, html){
+    let alertListagem = document.querySelector(selector);
+    alertListagem.innerHTML = html;
+    alertListagem.style.display = 'block';
+    setTimeout(() => alertListagem.style.display = 'none', 2000);
+}
 
 function updateTable(clientes){
     let linha ="";
@@ -41,7 +57,7 @@ function updateTable(clientes){
 
     for (const cliente of clientes) {
         linha += `<tr><td>${cliente.nome}</td><td>${cliente.idade}</td><td>${cliente.uf}
-        </td><td><input type="button" value="X" data-id="${cliente.id}" /></td></tr>`;
+        </td><td><input type="button" value="X" data-id="${cliente.id}" class="btn btn-danger"/></td></tr>`;
     } 
 
     const tbody = document.querySelector('table > tbody');
@@ -61,7 +77,7 @@ function updateTable(clientes){
             if(confirm("Tem certeza que deseja excluir este cliente?")){
                 deleteDatabase(btn.getAttribute('data-id'))
                     .then(result => {
-                        alert('Cliente exclido com sucesso!');
+                        exibirMensagem('#alertListagem', 'Cliente excluido com sucesso!');
                         btn.closest('tr').remove();
                     })
                     .catch(error => alert(`Ocorreu um erro ao excluir o cliente:${error}`))

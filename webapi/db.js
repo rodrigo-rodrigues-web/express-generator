@@ -27,7 +27,7 @@ async function selectClientes(){
 async function selectCliente(id){
     const conn = await connect();
     const [rows] = await conn.query('SELECT * FROM clientes WHERE id=?', [id]);
-    return rows && rows.length > 0 ? rows[0]:{};
+    return rows && rows.length > 0 ? rows[0]:{};    // This means if the rows exist (rows) and (&&) number of rows are more than 0 (rows.length > 0) then (?) return the first row(rows[0]), otherwise (:) return {}
 }
 
 async function insertCliente(cliente){
@@ -42,7 +42,7 @@ async function updateCliente(id, cliente, callback){
 
     for(var i=0; i < props.length;i++){ 
         const item = props[i];
-        if (i!==props.length -1) { // not the last property
+        if (i!==props.length - 1) { // not the last property
             sql += ` ${item[0]}=?,`;
         }
         else{
@@ -53,7 +53,7 @@ async function updateCliente(id, cliente, callback){
     values.push(id);
 
     const conn = await connect();
-   
+    
     return await conn.query(sql, values);
 }
 

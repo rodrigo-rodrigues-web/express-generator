@@ -53,7 +53,7 @@ function exibirMensagem(selector, html){
 
 function updateTable(clientes){
     let linha ="";
-    if(!Array.isArray(clientes)) clientes = [clientes];
+    if(!Array.isArray(clientes)) clientes = [clientes]; // if the clientes is a string "rodrigo", then it will change it to ["rodrigo"]. It becomes an array
 
     for (const cliente of clientes) {
         linha += `<tr><td>${cliente.nome}</td><td>${cliente.idade}</td><td>${cliente.uf}
@@ -64,6 +64,7 @@ function updateTable(clientes){
     if (tbody.querySelectorAll('tr > td').length === 1) {
         tbody.innerHTML = "";
     }
+    console.log(linha);
     tbody.innerHTML += linha;
     divListagem.style.display = "block";
     divCadastro.style.display = "none";

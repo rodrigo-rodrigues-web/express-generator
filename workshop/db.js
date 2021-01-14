@@ -19,8 +19,8 @@ async function connect(){
 
 async function selectClientes(){
     const conn = await connect();
-    const [rows] = await conn.query('SELECT * FROM clientes;');
-    //console.log('Name is ', (rows[0].nome));
+    const [rows] = await conn.query('SELECT * FROM clientes;');    
+    
     return rows;
 }
 

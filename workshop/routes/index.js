@@ -26,7 +26,6 @@ router.post('/new', async function(req, res){
     res.redirect('/?new=true');
 
   } catch (error) {
-    console.log(error);
     res.redirect('/?error=' + error);
   }
 });
